@@ -1,23 +1,18 @@
 const express = require('express');
-
-// Middleware for creating a session id on server and a session cookie on client
-const expressSession = require('express-session');
-
-// cors package prevents CORS errors when using client side API calls
 const cors = require('cors');
-
-// Add http headers, small layer of security
+const expressSession = require('express-session');
 const helmet = require('helmet');
-
-// Passport library and Github Strategy
 const passport = require('passport');
-const GitHubStrategy = require('passport-github2').Strategy;
+const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const app = express();
+
+// Import all route types for server functionality
+const authRoutes = require('./routes/auth');
 
 // Knex instance
 const knex = require('knex')(require('./knexfile.js').development);
 
-// Create Express app and also allow for app PORT to be optionally specified by an environment variable
-const app = express();
+// allow for app PORT to be optionally specified by an environment variable
 const PORT = process.env.PORT || 5050;
 
 // Require .env files for environment variables (keys and secrets)
@@ -57,25 +52,25 @@ app.use(passport.initialize());
 // Additional information: https://stackoverflow.com/questions/22052258/what-does-passport-session-middleware-do
 app.use(passport.session());
 
-// Initialize GitHub strategy middleware
-// http://www.passportjs.org/packages/passport-github2/
+// Initialize Google strategy middleware
+// https://www.passportjs.org/packages/passport-google-oauth20/
 // We can add multiple strategies with `passport.use` syntax
 passport.use(
-  new GitHubStrategy(
+  new GoogleStrategy(
     {
-      clientID: process.env.GITHUB_CLIENT_ID,
-      clientSecret: process.env.GITHUB_CLIENT_SECRET,
-      callbackURL: process.env.GITHUB_CALLBACK_URL
+      clientID: process.env.GOOGLE_CLIENT_ID,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      callbackURL: process.env.GOOGLE_CALLBACK_URL
     },
     (_accessToken, _refreshToken, profile, done) => {
       // For our implementation we don't need access or refresh tokens.
-      // Profile parameter will be the profile object we get back from GitHub
-      console.log('GitHub profile:', profile);
+      // Profile parameter will be the profile object we get back from Google
+      console.log('Google profile:', profile);
 
       // First let's check if we already have this user in our DB
       knex('users')
         .select('id')
-        .where({ github_id: profile.id })
+        .where({ google_id: profile.id })
         .then(user => {
           if (user.length) {
             // If user is found, pass the user object to serialize function
@@ -84,7 +79,7 @@ passport.use(
             // If user isn't found, we create a record
             knex('users')
               .insert({
-                github_id: profile.id,
+                google_id: profile.id,
                 avatar_url: profile._json.avatar_url,
                 username: profile.username
               })
@@ -137,5 +132,8 @@ passport.deserializeUser((userId, done) => {
 // Additional information on serializeUser and deserializeUser:
 // https://stackoverflow.com/questions/27637609/understanding-passport-serialize-deserialize
 
-// =========================================
+app.use('/auth', authRoutes);
 
+app.listen(PORT, () => {
+  console.log(`🚀 Server listening on port ${PORT}.`);
+});

@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "migrate": "knex migrate:latest",
+    "drop": "knex migrate:rollback",
+    "start": "nodemon index.js"
   },
   "keywords": [],
   "author": "",
@@ -18,7 +21,8 @@
     "helmet": "^5.0.2",
     "knex": "^1.0.4",
     "mysql": "^2.18.1",
-    "passport": "^0.5.2"
+    "passport": "^0.5.2",
+    "passport-google-oauth20": "^2.0.0"
   },
   "devDependencies": {
     "nodemon": "^2.0.15"
