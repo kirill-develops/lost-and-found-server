@@ -6,8 +6,6 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const app = express();
 
-// Import all route types for server functionality
-const authRoutes = require('./routes/auth');
 
 // Knex instance
 const knex = require('knex')(require('./knexfile.js').development);
@@ -60,28 +58,32 @@ passport.use(
     {
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: process.env.GOOGLE_CALLBACK_URL
+      callbackURL: process.env.GOOGLE_CALLBACK_URL,
+      scope: ['profile']
     },
     (_accessToken, _refreshToken, profile, done) => {
       // For our implementation we don't need access or refresh tokens.
       // Profile parameter will be the profile object we get back from Google
       console.log('Google profile:', profile);
+      let id = String(profile.id).slice(-18);
+      let profileId = Number(id);
 
       // First let's check if we already have this user in our DB
       knex('users')
         .select('id')
-        .where({ google_id: profile.id })
+        .where({ google_id: profileId })
         .then(user => {
           if (user.length) {
             // If user is found, pass the user object to serialize function
             done(null, user[0]);
           } else {
+
             // If user isn't found, we create a record
             knex('users')
               .insert({
-                google_id: profile.id,
-                avatar_url: profile._json.avatar_url,
-                username: profile.username
+                google_id: profileId,
+                avatar_url: profile._json.picture,
+                username: profile.displayName
               })
               .then(userId => {
                 // Pass the user object to serialize function
@@ -131,6 +133,11 @@ passport.deserializeUser((userId, done) => {
 
 // Additional information on serializeUser and deserializeUser:
 // https://stackoverflow.com/questions/27637609/understanding-passport-serialize-deserialize
+
+
+// Import all route types for server functionality
+const authRoutes = require('./routes/auth');
+
 
 app.use('/auth', authRoutes);
 
