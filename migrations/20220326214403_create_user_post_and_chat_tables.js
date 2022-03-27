@@ -4,13 +4,12 @@ exports.up = function (knex) {
       table.increments('id').primary();
       table.bigInteger('google_id').notNullable();
       table.string('avatar_url').notNullable();
-      table.string('username').notNullable();
       table.string('first_name').notNullable();
       table.string('last_name').notNullable();
       table.string('address');
       table.string('city').notNullable();
       table.string('province').notNullable();
-      table.integer('phone').notNullable();
+      table.string('phone').notNullable();
       table.string('email').notNullable().unique();
       table.timestamps(true, true);
     })
@@ -20,7 +19,7 @@ exports.up = function (knex) {
       table.string('title', 100).notNullable();
       table.text('description').notNullable();
       table.string('category').notNullable();
-      table.string('pic_url').notNullable();
+      table.string('pic_url');
       table.boolean('offer').notNullable();
       table.boolean('active').notNullable();
       table.timestamps(true, true);
