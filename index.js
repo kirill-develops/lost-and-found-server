@@ -59,7 +59,7 @@ passport.use(
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
-      scope: ['profile']
+      scope: ['profile', 'email']
     },
     (_accessToken, _refreshToken, profile, done) => {
       // For our implementation we don't need access or refresh tokens.
@@ -83,7 +83,9 @@ passport.use(
               .insert({
                 google_id: profileId,
                 avatar_url: profile._json.picture,
-                username: profile.displayName
+                first_name: profile.name.givenName,
+                last_name: profile.name.familyName,
+                email: profile._json.email
               })
               .then(userId => {
                 // Pass the user object to serialize function
