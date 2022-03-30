@@ -1,3 +1,6 @@
+/* eslint-disable object-curly-spacing */
+/* eslint-disable indent */
+/* eslint-disable max-len */
 const knex = require('knex')(require('../knexfile.js').development);
 
 
@@ -16,21 +19,21 @@ exports.getAll = (req, res) => {
       'posts.updated_at',
       'users.id as users_id',
       'users.avatar_url',
-      'users.first_name'
+      'users.first_name',
     )
     .from('posts')
     .leftJoin('users', 'posts.user_id', 'users.id')
     .orderBy('posts.id', 'desc')
-    .then(posts => {
+    .then((posts) => {
       let updatedPosts = posts;
 
       // Check if user is logged in and update all logged in user's posts with "isCurrentUser" field
       if (req.user) {
-        updatedPosts = updatedPosts.map(post => {
+        updatedPosts = updatedPosts.map((post) => {
           return {
             ...post,
-            isCurrentUser: post.user_id === req.user.id
-          }
+            isCurrentUser: post.user_id === req.user.id,
+          };
         });
       }
 
@@ -44,6 +47,7 @@ exports.getAll = (req, res) => {
 
 // controller to create a new Post
 exports.addPost = (req, res) => {
+  console.log('🚀 ~ file: post.js ~ line 50 ~ req', req.user);
   // If user is not logged in, we don't allow them to create a new post
   if (req.user === undefined) return res.status(401).json({ message: 'Unauthorized' });
 
@@ -57,9 +61,13 @@ exports.addPost = (req, res) => {
     .insert({
       user_id: req.user.id,
       title: req.body.title,
-      content: req.body.content
+      description: req.body.content,
+      category: req.body.content,
+      pic_url: req.body.content,
+      offer: req.body.content,
+      active: req.body.content,
     })
-    .then(postId => {
+    .then((postId) => {
       // Send newly created postId as a response
       res.status(201).json({ newPostId: postId[0] });
     })

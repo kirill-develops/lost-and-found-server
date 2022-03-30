@@ -1,3 +1,6 @@
+/* eslint-disable object-curly-spacing */
+/* eslint-disable max-len */
+/* eslint-disable indent */
 const express = require('express');
 const cors = require('cors');
 const expressSession = require('express-session');
@@ -26,8 +29,8 @@ app.use(helmet());
 app.use(
   cors({
     origin: true,
-    credentials: true
-  })
+    credentials: true,
+  }),
 );
 
 // Include express-session middleware (with additional config options required for Passport session)
@@ -35,8 +38,8 @@ app.use(
   expressSession({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true
-  })
+    saveUninitialized: true,
+  }),
 );
 
 // =========== Passport Config ============
@@ -59,25 +62,24 @@ passport.use(
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
-      scope: ['profile', 'email']
+      scope: ['profile', 'email'],
     },
     (_accessToken, _refreshToken, profile, done) => {
       // For our implementation we don't need access or refresh tokens.
       // Profile parameter will be the profile object we get back from Google
-      console.log('Google profile:', profile);
-      let id = String(profile.id).slice(-18);
-      let profileId = Number(id);
+      const id = String(profile.id);
+      const profileId = Number(id.slice(-18));
 
+      console.log('Google profile:', profile.id, id, profileId);
       // First let's check if we already have this user in our DB
       knex('users')
         .select('id')
         .where({ google_id: profileId })
-        .then(user => {
+        .then((user) => {
           if (user.length) {
             // If user is found, pass the user object to serialize function
             done(null, user[0]);
           } else {
-
             // If user isn't found, we create a record
             knex('users')
               .insert({
@@ -85,22 +87,22 @@ passport.use(
                 avatar_url: profile._json.picture,
                 first_name: profile.name.givenName,
                 last_name: profile.name.familyName,
-                email: profile._json.email
+                email: profile._json.email,
               })
-              .then(userId => {
+              .then((userId) => {
                 // Pass the user object to serialize function
                 done(null, { id: userId[0] });
               })
-              .catch(err => {
+              .catch((err) => {
                 console.log('Error creating a user', err);
               });
           }
         })
-        .catch(err => {
+        .catch((err) => {
           console.log('Error fetching a user', err);
         });
-    }
-  )
+    },
+  ),
 );
 
 // `serializeUser` determines which data of the auth user object should be stored in the session
@@ -121,14 +123,14 @@ passport.deserializeUser((userId, done) => {
   // Query user information from the database for currently authenticated user
   knex('users')
     .where({ id: userId })
-    .then(user => {
+    .then((user) => {
       // Remember that knex will return an array of records, so we need to get a single record from it
       console.log('req.user:', user[0]);
 
       // The full user object will be attached to request object as `req.user`
       done(null, user[0]);
     })
-    .catch(err => {
+    .catch((err) => {
       console.log('Error finding user', err);
     });
 });

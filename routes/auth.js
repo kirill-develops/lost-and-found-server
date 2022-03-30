@@ -1,3 +1,6 @@
+/* eslint-disable new-cap */
+/* eslint-disable max-len */
+/* eslint-disable indent */
 const express = require('express');
 const router = express.Router();
 const passport = require('passport');
@@ -16,13 +19,19 @@ router.get(
   '/google/callback',
   passport.authenticate('google', {
     failureRedirect: `${process.env.CLIENT_URL}/auth-fail`,
-    successRedirect: process.env.CLIENT_URL
-  })
+  }),
+  (_req, res) => {
+    console.log(res);
+    // Successful authentication, redirect to client-side application
+    res.redirect(`${process.env.CLIENT_URL}/dashboard`);
+  },
 );
 
 
 // User profile endpoint that requires authentication
-router.get('/profile', AuthController.getProfile);
+router.route('/profile')
+  .get(AuthController.getProfile)
+  .put(AuthController.editProfile);
 
 
 // Create a logout endpoint

@@ -1,3 +1,4 @@
+/* eslint-disable indent */
 exports.up = function (knex) {
   return knex.schema
     .createTable('users', (table) => {
@@ -7,11 +8,12 @@ exports.up = function (knex) {
       table.string('first_name').notNullable();
       table.string('last_name').notNullable();
       table.string('address');
-      table.string('city').notNullable();
-      table.string('province').notNullable();
-      table.string('phone').notNullable();
+      table.string('city');
+      table.string('province');
+      table.string('phone');
       table.string('email').notNullable().unique();
-      table.timestamps(true, true);
+      table.string('volunteer'),
+        table.timestamps(true, true);
     })
     .createTable('posts', (table) => {
       table.increments('id').primary();
