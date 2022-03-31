@@ -32,7 +32,7 @@ exports.getAll = (req, res) => {
         updatedPosts = updatedPosts.map((post) => {
           return {
             ...post,
-            isCurrentUser: post.user_id === req.user.id,
+            isCurrentUser: post.users_id === req.user.id,
           };
         });
       }
@@ -47,12 +47,14 @@ exports.getAll = (req, res) => {
 
 // controller to create a new Post
 exports.addPost = (req, res) => {
-  console.log('🚀 ~ file: post.js ~ line 50 ~ req', req.user);
   // If user is not logged in, we don't allow them to create a new post
   if (req.user === undefined) return res.status(401).json({ message: 'Unauthorized' });
 
+  // Deconstructing req.body for easier code digestion
+  const { title, description, category, offer, pic_url: picUrl } = req.body;
+
   // Validate request body for required fields
-  if (!req.body.title || !req.body.content) {
+  if (!title || !description || !category || !offer) {
     return res.status(400).json({ message: 'Missing post title or content fields' });
   }
 
@@ -60,12 +62,12 @@ exports.addPost = (req, res) => {
   knex('posts')
     .insert({
       user_id: req.user.id,
-      title: req.body.title,
-      description: req.body.content,
-      category: req.body.content,
-      pic_url: req.body.content,
-      offer: req.body.content,
-      active: req.body.content,
+      title: title,
+      description: description,
+      category: category,
+      offer: offer,
+      pic_url: picUrl || '',
+      active: true,
     })
     .then((postId) => {
       // Send newly created postId as a response

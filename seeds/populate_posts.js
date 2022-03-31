@@ -1,3 +1,6 @@
+/* eslint-disable object-curly-spacing */
+/* eslint-disable max-len */
+/* eslint-disable indent */
 // A library for generating mock data
 const casual = require('casual');
 
@@ -23,7 +26,7 @@ exports.seed = function (knex) {
           city: casual.city,
           province: casual.state,
           phone: casual.phone,
-          email: 'dummy@email.com'
+          email: 'dummy@email.com',
         });
     })
     .then(() => {
@@ -31,11 +34,11 @@ exports.seed = function (knex) {
       return knex('users')
         .select('id');
     })
-    .then(userIds => {
+    .then((userIds) => {
       const mockPosts = [];
 
       // Generate 10 posts
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 25; i++) {
         // Select a user id randomly from the list of users to create a post for
         const randomIndex = Math.floor(Math.random() * userIds.length);
         const randomId = userIds[randomIndex].id;
@@ -47,11 +50,11 @@ exports.seed = function (knex) {
           description: casual.sentences(10),
           category: casual.word,
           offer: casual.boolean,
-          active: casual.boolean
+          active: casual.boolean,
         });
       }
 
       // Insert mock posts into the table
       return knex('posts').insert(mockPosts);
-    })
+    });
 };

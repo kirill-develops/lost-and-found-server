@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable indent */
 exports.up = function (knex) {
   return knex.schema
@@ -12,8 +13,8 @@ exports.up = function (knex) {
       table.string('province');
       table.string('phone');
       table.string('email').notNullable().unique();
-      table.string('volunteer'),
-        table.timestamps(true, true);
+      table.string('volunteer');
+      table.timestamps(true, true);
     })
     .createTable('posts', (table) => {
       table.increments('id').primary();
