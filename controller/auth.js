@@ -22,17 +22,13 @@ exports.editProfile = (req, res) => {
   // eslint-disable-next-line object-curly-spacing
   if (req.user === undefined) return res.status(401).json({ message: 'Unauthorized' });
 
-  console.log(req.user);
-
   knex('users')
     .update(req.body)
     .where({ id: req.user.id })
     .then(() => {
-      console.log("success");
       res.send(`user with id: ${req.user.id} has been updated`);
     })
     .catch((err) => {
-      console.log("no success");
       res.send(`Error updating user ${req.user.id} ${err}`).status(400);
     });
 

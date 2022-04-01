@@ -21,7 +21,6 @@ router.get(
     failureRedirect: `${process.env.CLIENT_URL}/auth-fail`,
   }),
   (_req, res) => {
-    console.log(res);
     // Successful authentication, redirect to client-side application
     res.redirect(`${process.env.CLIENT_URL}/dashboard`);
   },

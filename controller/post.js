@@ -44,9 +44,52 @@ exports.getAll = (req, res) => {
     });
 };
 
+// todo controller to get one post based on Client Params
+exports.getOne = (req, res) => {
+  // Select post and user fields by using a join between posts and users tables
+  // and order them chronologically, newest first
+  console.log("🚀 ~ file: post.js ~ line 49 ~ req", req);
+
+  knex
+    .select(
+      'posts.id as post_id',
+      'posts.title',
+      'posts.description',
+      'posts.category',
+      'posts.pic_url',
+      'posts.offer',
+      'posts.active',
+      'posts.updated_at',
+      'users.id as users_id',
+      'users.avatar_url',
+      'users.first_name',
+    )
+    .from('posts')
+    .leftJoin('users', 'posts.user_id', 'users.id')
+    .orderBy('posts.id', 'desc')
+    .then((posts) => {
+      let updatedPosts = posts;
+
+      // Check if user is logged in and update all logged in user's posts with "isCurrentUser" field
+      if (req.user) {
+        updatedPosts = updatedPosts.map((post) => {
+          return {
+            ...post,
+            isCurrentUser: post.users_id === req.user.id,
+          };
+        });
+      }
+
+      res.status(200).json(updatedPosts);
+    })
+    .catch(() => {
+      res.status(500).json({ message: 'Error fetching posts' });
+    });
+};
+
 
 // controller to create a new Post
-exports.addPost = (req, res) => {
+exports.addOne = (req, res) => {
   // If user is not logged in, we don't allow them to create a new post
   if (req.user === undefined) return res.status(401).json({ message: 'Unauthorized' });
 
@@ -77,3 +120,9 @@ exports.addPost = (req, res) => {
       res.status(500).json({ message: 'Error creating a new post' });
     });
 };
+
+// todo controller to edit one Post
+exports.editOne = (req, res) => { };
+
+// todo controller to delete one Post
+exports.deleteOne = (req, res) => { };

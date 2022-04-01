@@ -70,7 +70,6 @@ passport.use(
       const id = String(profile.id);
       const profileId = Number(id.slice(-18));
 
-      console.log('Google profile:', profile.id, id, profileId);
       // First let's check if we already have this user in our DB
       knex('users')
         .select('id')
