@@ -26,7 +26,7 @@ exports.getAll = (req, res) => {
     .orderBy('posts.id', 'desc')
     .then((posts) => {
       let updatedPosts = posts;
-
+      console.log(posts);
       // Check if user is logged in and update all logged in user's posts with "isCurrentUser" field
       if (req.user) {
         updatedPosts = updatedPosts.map((post) => {
@@ -44,11 +44,9 @@ exports.getAll = (req, res) => {
     });
 };
 
-// todo controller to get one post based on Client Params
 exports.getOne = (req, res) => {
   // Select post and user fields by using a join between posts and users tables
   // and order them chronologically, newest first
-  console.log("🚀 ~ file: post.js ~ line 49 ~ req", req);
 
   knex
     .select(
@@ -65,14 +63,14 @@ exports.getOne = (req, res) => {
       'users.first_name',
     )
     .from('posts')
+    .where({ 'posts.id': req.params.postId })
     .leftJoin('users', 'posts.user_id', 'users.id')
-    .orderBy('posts.id', 'desc')
-    .then((posts) => {
-      let updatedPosts = posts;
+    .then((post) => {
+      let updatedPost = post;
 
       // Check if user is logged in and update all logged in user's posts with "isCurrentUser" field
       if (req.user) {
-        updatedPosts = updatedPosts.map((post) => {
+        updatedPost = updatedPost.map((post) => {
           return {
             ...post,
             isCurrentUser: post.users_id === req.user.id,
@@ -80,7 +78,7 @@ exports.getOne = (req, res) => {
         });
       }
 
-      res.status(200).json(updatedPosts);
+      res.status(200).json(...updatedPost);
     })
     .catch(() => {
       res.status(500).json({ message: 'Error fetching posts' });
