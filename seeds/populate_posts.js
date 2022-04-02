@@ -4,6 +4,10 @@
 // A library for generating mock data
 const casual = require('casual');
 
+const categories = ['housing', 'jobs', 'employment_services', 'on-boarding', 'translations', 'goods', 'transportation'];
+
+const provinces = ['ab', 'bc', 'mb', 'nb', 'nl', 'nt', 'ns', 'nu', 'on', 'pe', 'qc', 'sk', 'yt'];
+
 exports.seed = function (knex) {
   // First, delete all posts from the table
   return knex('posts')
@@ -24,7 +28,7 @@ exports.seed = function (knex) {
           last_name: 'account',
           address: casual.address,
           city: casual.city,
-          province: casual.state,
+          province: casual.random_element(provinces),
           phone: casual.phone,
           email: 'dummy@email.com',
         });
@@ -48,7 +52,7 @@ exports.seed = function (knex) {
           user_id: randomId,
           title: casual.title,
           description: casual.sentences(10),
-          category: casual.word,
+          category: casual.random_element(categories),
           offer: casual.boolean,
           active: casual.boolean,
         });
