@@ -22,10 +22,10 @@ exports.seed = function (knex) {
       // Then create a mock user (so we have more than one account for testing posts)
       return knex('users')
         .insert({
-          google_id: 92953487,
+          google_id: casual.integer(from = 10000000, to = 99999999),
           avatar_url: 'https://avatars.githubusercontent.com/u/92953487?v=4',
-          first_name: 'test',
-          last_name: 'account',
+          first_name: casual.first_name,
+          last_name: casual.last_name,
           address: casual.address,
           city: casual.city,
           province: casual.random_element(provinces),
