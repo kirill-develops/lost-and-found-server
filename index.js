@@ -13,11 +13,11 @@ const app = express();
 // Knex instance
 const knex = require('knex')(require('./knexfile.js').development);
 
-// allow for app PORT to be optionally specified by an environment variable
-const PORT = process.env.PORT || 5050;
-
 // Require .env files for environment variables (keys and secrets)
 require('dotenv').config();
+
+// allow for app PORT to be optionally specified by an environment variable
+const PORT = process.env.PORT || 5050;
 
 // Enable req.body middleware
 app.use(express.json());

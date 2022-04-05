@@ -20,13 +20,14 @@ exports.getAll = (req, res) => {
       'users.id as users_id',
       'users.avatar_url',
       'users.first_name',
+      'users.city',
+      'users.province',
     )
     .from('posts')
     .leftJoin('users', 'posts.user_id', 'users.id')
     .orderBy('posts.id', 'desc')
     .then((posts) => {
       let updatedPosts = posts;
-      console.log(posts);
       // Check if user is logged in and update all logged in user's posts with "isCurrentUser" field
       if (req.user) {
         updatedPosts = updatedPosts.map((post) => {
@@ -61,6 +62,8 @@ exports.getOne = (req, res) => {
       'users.id as users_id',
       'users.avatar_url',
       'users.first_name',
+      'users.city',
+      'users.province',
     )
     .from('posts')
     .where({ 'posts.id': req.params.postId })
