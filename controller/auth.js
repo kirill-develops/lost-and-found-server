@@ -16,8 +16,6 @@ exports.getProfile = (req, res) => {
 };
 
 exports.editProfile = (req, res) => {
-  console.log('🚀 ~ file: auth.js ~ line 15 ~ req', req.user.id, req.body);
-
   // If `req.user` isn't found send back a 401 Unauthorized response
   // eslint-disable-next-line object-curly-spacing
   if (req.user === undefined) return res.status(401).json({ message: 'Unauthorized' });

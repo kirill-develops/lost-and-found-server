@@ -98,7 +98,7 @@ exports.addOne = (req, res) => {
   const { title, description, category, offer, pic_url: picUrl } = req.body;
 
   // Validate request body for required fields
-  if (!title || !description || !category || !offer) {
+  if (!title || !description || !category) {
     return res.status(400).json({ message: 'Missing post title or content fields' });
   }
 
@@ -110,7 +110,7 @@ exports.addOne = (req, res) => {
       description: description,
       category: category,
       offer: offer,
-      pic_url: picUrl || '',
+      pic_url: picUrl,
       active: true,
     })
     .then((postId) => {
