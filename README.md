@@ -12,7 +12,7 @@
 
  -Kirill (06-04-2022)
 
-![Screenshot of Lost&Found app](./src/assets/images/big_hug.jpeg)
+![Screenshot of Lost&Found app](./assets/images/Desktop_1.png)
 
 # Installation
 Follow these steps to run a local instance of Lost&Found:
