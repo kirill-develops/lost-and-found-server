@@ -1,9 +1,7 @@
 // Require .env files for environment variables (keys and secrets)
 require('dotenv').config();
 
-
 module.exports = {
-
 
   development: {
     client: 'mysql',

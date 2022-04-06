@@ -1,6 +1,7 @@
 /* eslint-disable object-curly-spacing */
 /* eslint-disable indent */
 /* eslint-disable max-len */
+
 const knex = require('knex')(require('../knexfile.js').development);
 
 
@@ -28,6 +29,7 @@ exports.getAll = (req, res) => {
     .orderBy('posts.id', 'desc')
     .then((posts) => {
       let updatedPosts = posts;
+
       // Check if user is logged in and update all logged in user's posts with "isCurrentUser" field
       if (req.user) {
         updatedPosts = updatedPosts.map((post) => {
@@ -45,6 +47,7 @@ exports.getAll = (req, res) => {
     });
 };
 
+// controller to getOne Post by ID
 exports.getOne = (req, res) => {
   // Select post and user fields by using a join between posts and users tables
   // and order them chronologically, newest first

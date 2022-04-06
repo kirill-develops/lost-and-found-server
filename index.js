@@ -43,7 +43,6 @@ app.use(
 );
 
 // =========== Passport Config ============
-
 // Initialize Passport middleware
 app.use(passport.initialize());
 
@@ -133,7 +132,6 @@ passport.deserializeUser((userId, done) => {
       console.log('Error finding user', err);
     });
 });
-
 // Additional information on serializeUser and deserializeUser:
 // https://stackoverflow.com/questions/27637609/understanding-passport-serialize-deserialize
 

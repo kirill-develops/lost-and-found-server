@@ -6,7 +6,6 @@ const router = express.Router();
 // Import Post Controllers
 const PostController = require('../controller/post');
 
-
 // Get all posts & add a new post routes
 router.route('/')
   .get(PostController.getAll)

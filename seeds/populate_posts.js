@@ -1,12 +1,35 @@
 /* eslint-disable object-curly-spacing */
 /* eslint-disable max-len */
 /* eslint-disable indent */
+
 // A library for generating mock data
 const casual = require('casual');
 
-const categories = ['housing', 'jobs', 'employment_services', 'on-boarding', 'translations', 'goods', 'transportation'];
+const categories = [
+  'housing',
+  'jobs',
+  'employment_services',
+  'on-boarding',
+  'translations',
+  'goods',
+  'transportation',
+];
 
-const provinces = ['ab', 'bc', 'mb', 'nb', 'nl', 'nt', 'ns', 'nu', 'on', 'pe', 'qc', 'sk', 'yt'];
+const provinces = [
+  'Alberta',
+  'British Columbia',
+  'Manitoba',
+  'New Brunswick',
+  'Newfoundland',
+  'Northern Territories',
+  'Nova Scotia',
+  'Nunavut',
+  'Ontario',
+  'Prince Edward Island',
+  'Quebec',
+  'Saskatchewan',
+  'Yukon',
+];
 
 exports.seed = function (knex) {
   // First, delete all posts from the table

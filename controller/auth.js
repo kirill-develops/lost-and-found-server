@@ -29,9 +29,10 @@ exports.editProfile = (req, res) => {
     .catch((err) => {
       res.send(`Error updating user ${req.user.id} ${err}`).status(400);
     });
-
-
 };
+
+// todo get individual profile
+exports.getProfileById = (req, res) => { };
 
 exports.logoutProfile = (req, res) => {
   // Passport adds the logout method to request, it will end user session
@@ -40,3 +41,6 @@ exports.logoutProfile = (req, res) => {
   // Redirect the user back to client-side application
   res.redirect(process.env.CLIENT_URL);
 };
+
+// todo create delete endpoint
+exports.deleteProfile = (req, res) => { };
