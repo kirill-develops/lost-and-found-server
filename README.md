@@ -30,7 +30,7 @@ Follow these steps to run a local instance of Lost&Found:
         $ npm install
 4. Set environment variables:
       
-      >#### Rename `.env_sample` to `.env` and change placeholder .values with your own.
+      >#### Rename `.env_sample` to `.env` and change placeholder `<values>` with your own.
       >#### You can create google app credentials [here](https://console.developers.google.com/)
 
         SESSION_SECRET=<YOUR_SESSION_SECRET>
@@ -40,7 +40,7 @@ Follow these steps to run a local instance of Lost&Found:
         DB_PASSWORD=<YOUR_DATABASE_PASSWORD>
         DB_NAME=<YOUR_DATABASE_FOR_LOST_AND_FOUND> || "lost-and-found"
         DB_TIMEZONE=<YOUR_DATABASE_TIMEZONE>
-        PORT=<PORT_NUMER>
+        PORT=<PORT_NUMBER>
 
         GOOGLE_CLIENT_ID=<YOUR_GOOGLE_CLIENT_ID>
         GOOGLE_CLIENT_SECRET=<YOUR_GOOGLE_CLIENT_SECRET>

@@ -12,6 +12,7 @@ exports.up = function (knex) {
       table.string('city');
       table.string('province');
       table.string('phone');
+      table.string('postal_code');
       table.string('email').notNullable().unique();
       table.string('volunteer');
       table.timestamps(true, true);

@@ -42,9 +42,12 @@ exports.seed = function (knex) {
         .where({ email: 'dummy@email.com' });
     })
     .then(() => {
-      // Then create a mock user (so we have more than one account for testing posts)
-      return knex('users')
-        .insert({
+      // Then create 10 mock users (so we have more than one account for testing
+      // posts)
+      const mockUsers = [];
+
+      for (let i = 0; i < 10; i++) {
+        mockUsers.push({
           google_id: casual.integer(from = 10000000, to = 99999999),
           avatar_url: 'https://avatars.githubusercontent.com/u/92953487?v=4',
           first_name: casual.first_name,
@@ -53,8 +56,11 @@ exports.seed = function (knex) {
           city: casual.city,
           province: casual.random_element(provinces),
           phone: casual.phone,
-          email: 'dummy@email.com',
+          postal_code: casual.zip({ digits: 5 }),
+          email: casual.email,
         });
+      }
+      return knex('users').insert(mockUsers);
     })
     .then(() => {
       // Get all user ids from users table
@@ -64,8 +70,8 @@ exports.seed = function (knex) {
     .then((userIds) => {
       const mockPosts = [];
 
-      // Generate 10 posts
-      for (let i = 0; i < 25; i++) {
+      // Generate 25 posts
+      for (let i = 0; i < 50; i++) {
         // Select a user id randomly from the list of users to create a post for
         const randomIndex = Math.floor(Math.random() * userIds.length);
         const randomId = userIds[randomIndex].id;

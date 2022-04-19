@@ -74,11 +74,11 @@ passport.use(
         .select('id')
         .where({ google_id: profileId })
         .then((user) => {
-          if (user.length) {
-            // If user is found, pass the user object to serialize function
-            done(null, user[0]);
-          } else {
+          // If user is found, pass the user object to serialize function
+          user.length ? (
+            done(null, user[0])
             // If user isn't found, we create a record
+          ) : (
             knex('users')
               .insert({
                 google_id: profileId,
@@ -93,8 +93,8 @@ passport.use(
               })
               .catch((err) => {
                 console.log('Error creating a user', err);
-              });
-          }
+              })
+          );
         })
         .catch((err) => {
           console.log('Error fetching a user', err);

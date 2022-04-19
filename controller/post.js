@@ -31,14 +31,14 @@ exports.getAll = (req, res) => {
       let updatedPosts = posts;
 
       // Check if user is logged in and update all logged in user's posts with "isCurrentUser" field
-      if (req.user) {
+      req.user && (
         updatedPosts = updatedPosts.map((post) => {
           return {
             ...post,
             isCurrentUser: post.users_id === req.user.id,
           };
-        });
-      }
+        })
+      );
 
       res.status(200).json(updatedPosts);
     })
@@ -51,7 +51,6 @@ exports.getAll = (req, res) => {
 exports.getOne = (req, res) => {
   // Select post and user fields by using a join between posts and users tables
   // and order them chronologically, newest first
-
   knex
     .select(
       'posts.id as post_id',
@@ -75,14 +74,14 @@ exports.getOne = (req, res) => {
       let updatedPost = post;
 
       // Check if user is logged in and update all logged in user's posts with "isCurrentUser" field
-      if (req.user) {
+      req.user && (
         updatedPost = updatedPost.map((post) => {
           return {
             ...post,
             isCurrentUser: post.users_id === req.user.id,
           };
-        });
-      }
+        })
+      );
 
       res.status(200).json(...updatedPost);
     })
@@ -94,39 +93,48 @@ exports.getOne = (req, res) => {
 
 // controller to create a new Post
 exports.addOne = (req, res) => {
-  // If user is not logged in, we don't allow them to create a new post
-  if (req.user === undefined) return res.status(401).json({ message: 'Unauthorized' });
-
   // Deconstructing req.body for easier code digestion
   const { title, description, category, offer, pic_url: picUrl } = req.body;
-
-  // Validate request body for required fields
-  if (!title || !description || !category) {
-    return res.status(400).json({ message: 'Missing post title or content fields' });
-  }
-
-  // Insert new post into DB: user_id comes from session, title and content from a request body
-  knex('posts')
-    .insert({
-      user_id: req.user.id,
-      title: title,
-      description: description,
-      category: category,
-      offer: offer,
-      pic_url: picUrl,
-      active: true,
-    })
-    .then((postId) => {
-      // Send newly created postId as a response
-      res.status(201).json({ newPostId: postId[0] });
-    })
-    .catch(() => {
-      res.status(500).json({ message: 'Error creating a new post' });
-    });
+  // If user is not logged in, we don't allow them to create a new post
+  return (req.user === undefined) ? (
+    res.status(401).json({ message: 'Unauthorized' })
+    // Validate request body for required fields
+  ) : (!title || !description || !category) ? (
+    res.status(400).json({ message: 'Missing post title or content fields' })
+  ) : (
+    // Insert new post into DB: user_id comes from session, title and content from a request body
+    knex('posts')
+      .insert({
+        user_id: req.user.id,
+        title: title,
+        description: description,
+        category: category,
+        offer: offer,
+        pic_url: picUrl,
+        active: true,
+      })
+      .then((postId) => {
+        // Send newly created postId as a response
+        res.status(201).json({ newPostId: postId[0] });
+      })
+      .catch(() => {
+        res.status(500).json({ message: 'Error creating a new post' });
+      })
+  );
 };
 
 // todo controller to edit one Post
-exports.editOne = (req, res) => { };
+exports.editOne = (req, res) => {
+  knex('posts')
+    .update(req.body)
+    .where({ user_id: req.user.id, id: req.body.id })
+    .then(() => {
+      res.send(`post with id: ${req.body.id} belonging to ${req.user.id} has been updated`);
+    })
+    .catch((err) => {
+      res.send(`Error updating post with id: ${req.body.id} belonging to ${req.user.id} has been updated ${err}`).status(400);
+    });
+};
 
 // todo controller to delete one Post
 exports.deleteOne = (req, res) => { };
