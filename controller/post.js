@@ -123,18 +123,38 @@ exports.addOne = (req, res) => {
   );
 };
 
-// todo controller to edit one Post
+// todo Test route
 exports.editOne = (req, res) => {
-  knex('posts')
-    .update(req.body)
-    .where({ user_id: req.user.id, id: req.body.id })
-    .then(() => {
-      res.send(`post with id: ${req.body.id} belonging to ${req.user.id} has been updated`);
-    })
-    .catch((err) => {
-      res.send(`Error updating post with id: ${req.body.id} belonging to ${req.user.id} has been updated ${err}`).status(400);
-    });
+  return (req.user === undefined) ? (
+    res.status(401).json({ message: 'Unauthorized' })
+    // Validate request body for required fields
+  ) : (
+    knex('posts')
+      .update(req.body)
+      .where({ user_id: req.user.id, id: req.body.id })
+      .then(() => {
+        res.send(`post with id: ${req.body.id} belonging to ${req.user.id} has been updated`);
+      })
+      .catch((err) => {
+        res.send(`Error updating post with id: ${req.body.id} belonging to ${req.user.id} ${err}`).status(400);
+      })
+  );
 };
 
-// todo controller to delete one Post
-exports.deleteOne = (req, res) => { };
+// todo Test route
+exports.deleteOne = (req, res) => {
+  return (req.user === undefined) ? (
+    res.status(401).json({ message: 'Unauthorized' })
+    // Validate request body for required fields
+  ) : (
+    knex('posts')
+      .delete()
+      .where({ user_id: req.user.id, id: req.body.id })
+      .then(() => {
+        res.status(204).send(`post with id: ${req.body.id} belonging to ${req.user.id} has been deleted`);
+      })
+      .catch((err) => {
+        res.status(400).send(`Error deleting post with id: ${req.body.id} belonging to ${req.user.id} ${err}`);
+      })
+  );
+};
