@@ -1,14 +1,11 @@
-/* eslint-disable object-curly-spacing */
-/* eslint-disable max-len */
-/* eslint-disable indent */
 const express = require('express');
 const cors = require('cors');
 const expressSession = require('express-session');
 const helmet = require('helmet');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
-const app = express();
 
+const app = express();
 
 // Knex instance
 const knex = require('knex')(require('./knexfile.js').development);
@@ -75,10 +72,10 @@ passport.use(
         .where({ google_id: profileId })
         .then((user) => {
           // If user is found, pass the user object to serialize function
-          user.length ? (
-            done(null, user[0])
+          if (user.length) {
+            done(null, user[0]);
             // If user isn't found, we create a record
-          ) : (
+          } else {
             knex('users')
               .insert({
                 google_id: profileId,
@@ -93,8 +90,8 @@ passport.use(
               })
               .catch((err) => {
                 console.log('Error creating a user', err);
-              })
-          );
+              });
+          }
         })
         .catch((err) => {
           console.log('Error fetching a user', err);
@@ -122,7 +119,8 @@ passport.deserializeUser((userId, done) => {
   knex('users')
     .where({ id: userId })
     .then((user) => {
-      // Remember that knex will return an array of records, so we need to get a single record from it
+      // Remember that knex will return an array of records, so we need to get a
+      // single record from it
       console.log('req.user:', user[0]);
 
       // The full user object will be attached to request object as `req.user`
@@ -134,7 +132,6 @@ passport.deserializeUser((userId, done) => {
 });
 // Additional information on serializeUser and deserializeUser:
 // https://stackoverflow.com/questions/27637609/understanding-passport-serialize-deserialize
-
 
 // Import all route types for server functionality
 const authRoutes = require('./routes/auth');

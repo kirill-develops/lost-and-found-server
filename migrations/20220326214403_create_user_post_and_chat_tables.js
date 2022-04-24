@@ -1,5 +1,3 @@
-/* eslint-disable max-len */
-/* eslint-disable indent */
 exports.up = function (knex) {
   return knex.schema
     .createTable('users', (table) => {

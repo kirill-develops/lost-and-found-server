@@ -1,7 +1,3 @@
-/* eslint-disable object-curly-spacing */
-/* eslint-disable max-len */
-/* eslint-disable indent */
-
 // A library for generating mock data
 const casual = require('casual');
 
@@ -31,22 +27,22 @@ const provinces = [
   'Yukon',
 ];
 
-exports.seed = function (knex) {
+exports.seed = function seed(knex) {
   // First, delete all posts from the table
   return knex('posts')
     .del()
-    .then(() => {
+    .then(() => (
       // Next delete a mock user
-      return knex('users')
+      knex('users')
         .del()
-        .where({ email: 'dummy@email.com' });
-    })
+        .where({ email: 'dummy@email.com' })
+    ))
     .then(() => {
       // Then create 10 mock users (so we have more than one account for testing
       // posts)
       const mockUsers = [];
 
-      for (let i = 0; i < 10; i++) {
+      for (let i = 0; i < 10; i += 1) {
         mockUsers.push({
           google_id: casual.integer(from = 10000000, to = 99999999),
           avatar_url: 'https://avatars.githubusercontent.com/u/92953487?v=4',
@@ -62,16 +58,16 @@ exports.seed = function (knex) {
       }
       return knex('users').insert(mockUsers);
     })
-    .then(() => {
+    .then(() => (
       // Get all user ids from users table
-      return knex('users')
-        .select('id');
-    })
+      knex('users')
+        .select('id')
+    ))
     .then((userIds) => {
       const mockPosts = [];
 
       // Generate 25 posts
-      for (let i = 0; i < 50; i++) {
+      for (let i = 0; i < 50; i += 1) {
         // Select a user id randomly from the list of users to create a post for
         const randomIndex = Math.floor(Math.random() * userIds.length);
         const randomId = userIds[randomIndex].id;

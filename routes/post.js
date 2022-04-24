@@ -1,8 +1,6 @@
-/* eslint-disable new-cap */
-/* eslint-disable indent */
 const express = require('express');
-const router = express.Router();
 
+const router = express.Router();
 // Import Post Controllers
 const PostController = require('../controller/post');
 
