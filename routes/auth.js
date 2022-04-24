@@ -1,8 +1,5 @@
-/* eslint-disable new-cap */
-/* eslint-disable max-len */
-/* eslint-disable indent */
-
 const express = require('express');
+
 const router = express.Router();
 const passport = require('passport');
 require('dotenv').config();
@@ -10,7 +7,10 @@ require('dotenv').config();
 const AuthController = require('../controller/auth');
 
 // Create a login endpoint which kickstarts the auth process and takes user to a consent page
-router.get('/google', passport.authenticate('google'));
+router.get('/google', (req, _res, next) => {
+  req.session.analysis_id = req._parsedUrl.query;
+  next();
+}, passport.authenticate('google'));
 
 // This is the endpoint that Google will redirect to after user responds on consent page
 router.get(
@@ -18,9 +18,14 @@ router.get(
   passport.authenticate('google', {
     failureRedirect: `${process.env.CLIENT_URL}/auth-fail`,
   }),
-  (_req, res) => {
+  (req, res) => {
+    const param = req.session.analysis_id;
     // Successful authentication, redirect to client-side application
-    res.redirect(`${process.env.CLIENT_URL}/dashboard`);
+    if (!param || param === '/') {
+      res.redirect(`${process.env.CLIENT_URL}/dashboard`);
+    } else {
+      res.redirect(`${process.env.CLIENT_URL}${param}`);
+    }
   },
 );
 
@@ -29,7 +34,6 @@ router.route('/profile')
   .get(AuthController.getProfile)
   .put(AuthController.editProfile)
   .delete(AuthController.deleteProfile);
-
 
 router.route('/profile/:userId')
   .get(AuthController.getProfileById);
