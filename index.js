@@ -64,12 +64,11 @@ passport.use(
       // For our implementation we don't need access or refresh tokens.
       // Profile parameter will be the profile object we get back from Google
       const id = String(profile.id);
-      const profileId = Number(id.slice(-18));
 
       // First let's check if we already have this user in our DB
       knex('users')
         .select('id')
-        .where({ google_id: profileId })
+        .where({ google_id: id })
         .then((user) => {
           // If user is found, pass the user object to serialize function
           if (user.length) {
@@ -78,7 +77,7 @@ passport.use(
           } else {
             knex('users')
               .insert({
-                google_id: profileId,
+                google_id: id,
                 avatar_url: profile._json.picture,
                 first_name: profile.name.givenName,
                 last_name: profile.name.familyName,
