@@ -58,7 +58,7 @@ passport.use(
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
       callbackURL: process.env.GOOGLE_CALLBACK_URL,
-      scope: ['profile', 'email'],
+      scope: ['profile', 'email', 'https://www.googleapis.com/auth/plus.login'],
     },
     (_accessToken, _refreshToken, profile, done) => {
       // For our implementation we don't need access or refresh tokens.
