@@ -12,7 +12,7 @@ exports.up = function (knex) {
       table.string('phone');
       table.string('postal_code');
       table.string('email').notNullable().unique();
-      table.string('volunteer');
+      table.boolean('volunteer');
       table.timestamps(true, true);
     })
     .createTable('posts', (table) => {

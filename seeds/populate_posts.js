@@ -48,12 +48,13 @@ exports.seed = function seed(knex) {
           avatar_url: 'https://avatars.githubusercontent.com/u/92953487?v=4',
           first_name: casual.first_name,
           last_name: casual.last_name,
-          address: casual.address,
+          address: casual.address1,
           city: casual.city,
           province: casual.random_element(provinces),
           phone: casual.phone,
           postal_code: casual.zip({ digits: 5 }),
           email: casual.email,
+          volunteer: casual.boolean,
         });
       }
       return knex('users').insert(mockUsers);
