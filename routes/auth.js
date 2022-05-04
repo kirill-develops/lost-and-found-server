@@ -35,7 +35,7 @@ router.route('/profile')
   .put(AuthController.editProfile)
   .delete(AuthController.deleteProfile);
 
-router.route('/profile/:userId')
+router.route('/profile/:id')
   .get(AuthController.getProfileById);
 
 // Create a logout endpoint
