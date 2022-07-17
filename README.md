@@ -6,8 +6,6 @@
 
  Below are instructions on how to install the Node/Express API and you can [click here](https://github.com/kirill-develops/lost-and-found-client) to find the front-end React.js app Repo and the remaining steps
 
- [Click here ](http://linktomyvideo.com)to watch my demo presentation.
-
  Thanks for stopping by. 💫 
 
  -Kirill (06-04-2022)
