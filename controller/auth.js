@@ -3,7 +3,7 @@
 /* eslint-disable padded-blocks */
 /* eslint-disable max-len */
 
-const knex = require('knex')(require('../knexfile').development);
+const knex = require('knex')(require('../knexfile')[process.env.NODE_ENV || 'development']);
 
 exports.getProfile = (req, res) => {
 
