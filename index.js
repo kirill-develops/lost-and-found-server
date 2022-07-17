@@ -11,7 +11,7 @@ const app = express();
 
 
 // Knex instance
-const knex = require('knex')(require('./knexfile.js').development);
+const knex = require('knex')(require('./knexfile.js')[process.env.NODE_ENV || 'development']);
 
 // Require .env files for environment variables (keys and secrets)
 require('dotenv').config();

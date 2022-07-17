@@ -2,7 +2,7 @@
 /* eslint-disable indent */
 /* eslint-disable max-len */
 
-const knex = require('knex')(require('../knexfile.js').development);
+const knex = require('knex')(require('../knexfile.js')[process.env.NODE_ENV || 'development']);
 
 
 // controller to getAll Posts
