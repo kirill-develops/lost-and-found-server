@@ -9,7 +9,7 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const app = express();
 
-app.enable('trust proxy');
+app.set('trust proxy', 1);
 
 // Knex instance
 const knex = require('knex')(require('./knexfile.js')[process.env.NODE_ENV || 'development']);
@@ -40,6 +40,7 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
+    name: 'lostnfound',
   }),
 );
 
