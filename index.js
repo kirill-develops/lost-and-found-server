@@ -9,8 +9,6 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const app = express();
 
-app.set('trust proxy', 1);
-
 // Knex instance
 const knex = require('knex')(require('./knexfile.js')[process.env.NODE_ENV || 'development']);
 
@@ -34,13 +32,19 @@ app.use(
   }),
 );
 
-// Include express-session middleware (with additional config options required for Passport session)
+app.set('trust proxy', 1);
+
+// Include express-session middleware (with additional config options required
+// for Passport session)
 app.use(
   expressSession({
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
     name: 'lostnfound',
+    cookie: {
+      secure: (process.env?.NODE_ENV === 'production') ? true : false,
+    },
   }),
 );
 
@@ -136,7 +140,6 @@ passport.deserializeUser((userId, done) => {
 });
 // Additional information on serializeUser and deserializeUser:
 // https://stackoverflow.com/questions/27637609/understanding-passport-serialize-deserialize
-
 
 // Import all route types for server functionality
 const authRoutes = require('./routes/auth');
