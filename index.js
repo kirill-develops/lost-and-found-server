@@ -9,6 +9,7 @@ const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const app = express();
 
+app.enable('trust proxy');
 
 // Knex instance
 const knex = require('knex')(require('./knexfile.js')[process.env.NODE_ENV || 'development']);

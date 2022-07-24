@@ -8,7 +8,6 @@ const knex = require('knex')(require('../knexfile')[process.env.NODE_ENV || 'dev
 exports.getProfile = (req, res) => {
 
   // If `req.user` isn't found send back a 401 Unauthorized response
-  // eslint-disable-next-line object-curly-spacing
   if (req.user === undefined) return res.status(401).json({ message: 'Unauthorized' });
 
   // If user is currently authenticated, send back user info

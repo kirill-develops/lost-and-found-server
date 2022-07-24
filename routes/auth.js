@@ -3,6 +3,7 @@
 /* eslint-disable indent */
 
 const express = require('express');
+
 const router = express.Router();
 const passport = require('passport');
 require('dotenv').config();
@@ -29,7 +30,6 @@ router.route('/profile')
   .get(AuthController.getProfile)
   .put(AuthController.editProfile)
   .delete(AuthController.deleteProfile);
-
 
 router.route('/profile/:userId')
   .get(AuthController.getProfileById);
