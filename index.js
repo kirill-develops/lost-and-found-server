@@ -36,7 +36,7 @@ app.use(
 
 const { createClient } = require("redis");
 let redisClient = createClient({
-  url: "rediss://:6f9f8f1449bd430b923a1f9d89c1d30c@us1-neutral-slug-37786.upstash.io:37786",
+  url: "redis://6f9f8f1449bd430b923a1f9d89c1d30c@us1-neutral-slug-37786.upstash.io:37786",
   legacyMode: true
 })
 redisClient.connect().catch(console.error);
@@ -154,7 +154,6 @@ passport.deserializeUser((userId, done) => {
 // Import all route types for server functionality
 const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/post');
-const { MemoryStore } = require('express-session');
 
 app.use('/auth', authRoutes);
 app.use('/post', postRoutes);
