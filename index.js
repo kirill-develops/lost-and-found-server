@@ -52,9 +52,9 @@ app.use(
     resave: false,
     saveUninitialized: true,
     name: 'lostnfound',
-    cookie: {
-      secure: (process.env?.NODE_ENV === 'production') ? true : false,
-    },
+    // cookie: {
+    //   secure: (process.env?.NODE_ENV === 'production') ? true : false,
+    // },
   }),
 );
 
