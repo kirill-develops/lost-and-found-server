@@ -3,10 +3,10 @@
 /* eslint-disable indent */
 const express = require('express');
 const cors = require('cors');
-const expressSession = require('express-session');
 const helmet = require('helmet');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+const expressSession = require('express-session');
 let RedisStore = require('connect-redis')(expressSession);
 
 const app = express();
@@ -36,7 +36,7 @@ app.use(
 
 const { createClient } = require("redis");
 let redisClient = createClient({
-  url: "redis://6f9f8f1449bd430b923a1f9d89c1d30c@us1-neutral-slug-37786.upstash.io:37786",
+  url: "rediss://:6f9f8f1449bd430b923a1f9d89c1d30c@us1-neutral-slug-37786.upstash.io:37786",
   legacyMode: true
 })
 redisClient.connect().catch(console.error);
