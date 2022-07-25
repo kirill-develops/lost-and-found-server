@@ -7,6 +7,8 @@ const expressSession = require('express-session');
 const helmet = require('helmet');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
+let RedisStore = require('connect-redis')(expressSession);
+
 const app = express();
 
 // Knex instance
@@ -32,12 +34,20 @@ app.use(
   }),
 );
 
+const { createClient } = require("redis");
+let redisClient = createClient({
+  url: "rediss://:6f9f8f1449bd430b923a1f9d89c1d30c@us1-neutral-slug-37786.upstash.io:37786",
+  legacyMode: true
+})
+redisClient.connect().catch(console.error);
+
 app.set('trust proxy', 1);
 
 // Include express-session middleware (with additional config options required
 // for Passport session)
 app.use(
   expressSession({
+    store: new RedisStore({ client: redisClient }),
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
@@ -144,6 +154,7 @@ passport.deserializeUser((userId, done) => {
 // Import all route types for server functionality
 const authRoutes = require('./routes/auth');
 const postRoutes = require('./routes/post');
+const { MemoryStore } = require('express-session');
 
 app.use('/auth', authRoutes);
 app.use('/post', postRoutes);
