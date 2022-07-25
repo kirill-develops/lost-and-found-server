@@ -52,10 +52,6 @@ app.use(
     resave: false,
     saveUninitialized: true,
     name: 'lostnfound',
-    cookie: {
-      // secure: (process.env?.NODE_ENV === 'production') ? true : false,
-      httpOnly: (process.env?.NODE_ENV === 'production') ? false : true,
-    },
   }),
 );
 
