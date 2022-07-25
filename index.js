@@ -32,7 +32,7 @@ app.use(
   }),
 );
 
-app.set('trust proxy', 1);
+// app.set('trust proxy', 1);
 
 // Include express-session middleware (with additional config options required
 // for Passport session)
@@ -42,9 +42,9 @@ app.use(
     resave: false,
     saveUninitialized: true,
     name: 'lostnfound',
-    cookie: {
-      secure: (process.env?.NODE_ENV === 'production') ? true : false,
-    },
+    // cookie: {
+    //   secure: (process.env?.NODE_ENV === 'production') ? true : false,
+    // },
   }),
 );
 
