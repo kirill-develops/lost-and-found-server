@@ -41,7 +41,7 @@ app.use(
     secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: true,
-    name: 'lostnfound',
+    // name: 'lostnfound',
     // cookie: {
     //   secure: (process.env?.NODE_ENV === 'production') ? true : false,
     // },
