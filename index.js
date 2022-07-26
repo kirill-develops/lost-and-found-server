@@ -36,10 +36,28 @@ app.use(
 
 const { createClient } = require("redis");
 let redisClient = createClient({
-  url: "rediss://:6f9f8f1449bd430b923a1f9d89c1d30c@us1-neutral-slug-37786.upstash.io:37786",
-  legacyMode: true
-})
+  url: envVars.REDIS_URL,
+		lazyConnect: true,
+		showFriendlyErrorStack: true,
+		retry_strategy: (options) => {
+			const { error, total_retry_time, attempt } = options;
+			if (error?.code === 'ECONNREFUSED' || error?.code === 'NR_CLOSED') {
+				return 5000;
+			}
+			if (total_retry_time > 1000 * 15) {
+				return undefined;
+			}
+			if (attempt > 10) {
+				return undefined;
+			}
+			return Math.min(options.attempt * 1000, 5000); //in ms
+		},
+	});
 redisClient.connect().catch(console.error);
+
+redisClient.on('error', (err) => {
+  console.log('ⓘ on error:', err);
+});
 
 app.set('trust proxy', 1);
 
