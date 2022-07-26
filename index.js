@@ -56,7 +56,7 @@ let redisClient = createClient({
 
 if (!redisClient.isOpen) {
 			redisClient.connect().catch(console.error);;
-			console.info('connected to redis at', envVars.REDIS_URL);
+			console.info('connected to redis at', process.env.REDIS_URL);
 		}
 
 redisClient.on('error', (err) => {
