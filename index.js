@@ -7,12 +7,8 @@ const helmet = require('helmet');
 const passport = require('passport');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 const expressSession = require('express-session');
+const { createClient } = require("redis");
 let RedisStore = require('connect-redis')(expressSession);
-
-const app = express();
-
-// Knex instance
-const knex = require('knex')(require('./knexfile.js')[process.env.NODE_ENV || 'development']);
 
 // Require .env files for environment variables (keys and secrets)
 require('dotenv').config();
@@ -20,12 +16,15 @@ require('dotenv').config();
 // allow for app PORT to be optionally specified by an environment variable
 const PORT = process.env.PORT || 5050;
 
+// Knex instance
+const knex = require('knex')(require('./knexfile.js')[process.env.NODE_ENV || 'development']);
+
+
+const app = express();
 // Enable req.body middleware
 app.use(express.json());
-
 // Initialize HTTP Headers middleware
 app.use(helmet());
-
 // Enable CORS (with additional config options required for cookies)
 app.use(
   cors({
@@ -34,7 +33,6 @@ app.use(
   }),
 );
 
-const { createClient } = require("redis");
 let redisClient = createClient({
   url: process.env.REDIS_URL,
   lazyConnect: true,
@@ -63,7 +61,7 @@ redisClient.on('error', (err) => {
   console.log('ⓘ on error:', err);
 });
 
-app.set('trust proxy', 1);
+// app.set('trust proxy', 1);
 
 // Include express-session middleware (with additional config options required
 // for Passport session)
