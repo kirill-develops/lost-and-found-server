@@ -55,7 +55,7 @@ let redisClient = createClient({
 });
 
 if (!redisClient.isOpen) {
-			await redisClient.connect().catch(console.error);;
+			redisClient.connect().catch(console.error);;
 			console.info('connected to redis at', envVars.REDIS_URL);
 		}
 
