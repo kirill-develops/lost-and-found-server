@@ -36,7 +36,7 @@ app.use(
 
 const { createClient } = require("redis");
 let redisClient = createClient({
-  url: process.env.REDIS_URL,
+  url: process.env.REDIS_TLS_URL,
 		lazyConnect: true,
 		showFriendlyErrorStack: true,
 		retry_strategy: (options) => {
@@ -55,9 +55,9 @@ let redisClient = createClient({
 	});
 redisClient.connect().catch(console.error);
 
-redisClient.on('error', (err) => {
-  console.log('ⓘ on error:', err);
-});
+// redisClient.on('error', (err) => {
+//   console.log('ⓘ on error:', err);
+// });
 
 app.set('trust proxy', 1);
 
