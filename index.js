@@ -36,7 +36,7 @@ app.use(
 
 const { createClient } = require("redis");
 let redisClient = createClient({
-  url: envVars.REDIS_URL,
+  url: process.env.REDIS_URL,
 		lazyConnect: true,
 		showFriendlyErrorStack: true,
 		retry_strategy: (options) => {
