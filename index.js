@@ -61,6 +61,8 @@ redisClient.on('error', (err) => {
   console.log('ⓘ on error:', err);
 });
 
+app.set('trust proxy', 1);
+
 // Include express-session middleware (with additional config options required
 // for Passport session)
 app.use(
