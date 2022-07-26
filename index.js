@@ -36,7 +36,7 @@ app.use(
 
 const { createClient } = require("redis");
 let redisClient = createClient({
-  url: process.env.REDIS_URL,
+  url: process.env.UPSTASH_REDIS_URL,
   lazyConnect: true,
   showFriendlyErrorStack: true,
 	retry_strategy: (options) => {
@@ -56,7 +56,7 @@ let redisClient = createClient({
 
 if (!redisClient.isOpen) {
 			redisClient.connect().catch(console.error);;
-			console.info('connected to redis at', process.env.REDIS_URL);
+			console.info('connected to redis at', process.env.UPSTASH_REDIS_URL);
 		}
 
 redisClient.on('error', (err) => {
