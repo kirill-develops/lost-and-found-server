@@ -19,7 +19,6 @@ const PORT = process.env.PORT || 5050;
 // Knex instance
 const knex = require('knex')(require('./knexfile.js')[process.env.NODE_ENV || 'development']);
 
-
 const app = express();
 // Enable req.body middleware
 app.use(express.json());
@@ -54,7 +53,7 @@ let redisClient = createClient({
 });
 
 if (!redisClient.isOpen) {
-			redisClient.connect().catch(console.error);;
+			redisClient.connect().catch(console.error);
 			console.info('connected to redis at', process.env.REDIS_URL);
 		}
 
@@ -73,6 +72,9 @@ app.use(
     resave: false,
     saveUninitialized: true,
     name: 'lostnfound',
+    cookie: {
+      secure: process.env.NODE_ENV === 'Production' ? true : false
+    }
   }),
 );
 
