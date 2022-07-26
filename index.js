@@ -37,7 +37,7 @@ let redisClient = createClient({
   url: process.env.REDIS_URL,
   lazyConnect: true,
   showFriendlyErrorStack: true,
-  legacyMode: true
+  legacyMode: true,
 	retry_strategy: (options) => {
     const { error, total_retry_time, attempt } = options;
     if (error?.code === 'ECONNREFUSED' || error?.code === 'NR_CLOSED') {
