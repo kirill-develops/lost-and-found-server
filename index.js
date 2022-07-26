@@ -61,14 +61,13 @@ redisClient.on('error', (err) => {
   console.log('ⓘ on error:', err);
 });
 
-// app.set('trust proxy', 1);
-
 // Include express-session middleware (with additional config options required
 // for Passport session)
 app.use(
   expressSession({
     store: new RedisStore({ client: redisClient }),
     secret: process.env.SESSION_SECRET,
+    proxy: process.env.NODE_ENV === 'Production' ? true : false,
     resave: false,
     saveUninitialized: true,
     name: 'lostnfound',
