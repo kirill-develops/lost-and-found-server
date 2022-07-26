@@ -37,8 +37,9 @@ app.use(
 const { createClient } = require("redis");
 let redisClient = createClient({
   url: process.env.REDIS_TLS_URL,
-		lazyConnect: true,
-		showFriendlyErrorStack: true,
+    lazyConnect: true,
+    showFriendlyErrorStack: true,
+    ssl_params: { verify_mode: OpenSSL::SSL::VERIFY_NONE },
 		retry_strategy: (options) => {
 			const { error, total_retry_time, attempt } = options;
 			if (error?.code === 'ECONNREFUSED' || error?.code === 'NR_CLOSED') {
