@@ -15,6 +15,7 @@ require('dotenv').config();
 
 // allow for app PORT to be optionally specified by an environment variable
 const PORT = process.env.PORT || 5050;
+const isProdEnv = process.env.NODE_ENV === 'production' ? true : false;
 
 // Knex instance
 const knex = require('knex')(require('./knexfile.js')[process.env.NODE_ENV || 'development']);
@@ -69,12 +70,12 @@ app.use(
   expressSession({
     store: new RedisStore({ client: redisClient }),
     secret: process.env.SESSION_SECRET,
-    proxy: process.env.NODE_ENV === 'production' ? true : false,
+    proxy: isProdEnv,
     resave: false,
     saveUninitialized: true,
     name: 'lostnfound',
     cookie: {
-      secure: process.env.NODE_ENV === 'production' ? true : false,
+      secure: isProdEnv,
     }
   }),
 );
