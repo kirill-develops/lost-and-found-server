@@ -25,6 +25,7 @@ const app = express();
 app.use(express.json());
 // Initialize HTTP Headers middleware
 app.use(helmet());
+app.use(helmet.hsts())
 // Enable CORS (with additional config options required for cookies)
 app.use(
   cors({
@@ -75,8 +76,8 @@ app.use(
     saveUninitialized: true,
     name: 'lostnfound',
     cookie: {
-      secure: true,
-    }
+      secure: isProdEnv
+        }
   }),
 );
 
