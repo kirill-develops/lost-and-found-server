@@ -75,7 +75,7 @@ app.use(
     saveUninitialized: true,
     name: 'lostnfound',
     cookie: {
-      secure: isProdEnv,
+      secure: true,
     }
   }),
 );
