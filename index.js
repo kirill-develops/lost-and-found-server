@@ -69,13 +69,12 @@ app.use(
   expressSession({
     store: new RedisStore({ client: redisClient }),
     secret: process.env.SESSION_SECRET,
-    proxy: process.env.NODE_ENV === 'Production' ? true : false,
+    proxy: process.env.NODE_ENV === 'production' ? true : false,
     resave: false,
     saveUninitialized: true,
     name: 'lostnfound',
     cookie: {
-      secure: process.env.NODE_ENV === 'Production' ? true : false,
-      httpOnly: false
+      secure: process.env.NODE_ENV === 'production' ? true : false,
     }
   }),
 );
