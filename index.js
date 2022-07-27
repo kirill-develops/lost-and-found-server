@@ -70,11 +70,12 @@ app.use(
     store: new RedisStore({ client: redisClient }),
     secret: process.env.SESSION_SECRET,
     proxy: process.env.NODE_ENV === 'Production' ? true : false,
-    resave: true,
+    resave: false,
     saveUninitialized: true,
     name: 'lostnfound',
     cookie: {
-      secure: process.env.NODE_ENV === 'Production' ? true : false
+      secure: process.env.NODE_ENV === 'Production' ? true : false,
+      httpOnly: false
     }
   }),
 );
