@@ -25,11 +25,11 @@ const app = express();
 app.use(express.json());
 // Initialize HTTP Headers middleware
 app.use(helmet());
-app.use(helmet.hsts())
+app.use(helmet.hsts());
 // Enable CORS (with additional config options required for cookies)
 app.use(
   cors({
-    origin: true,
+    origin: isProdEnv ? [process.env.CLIENT_URL] : true,
     credentials: true,
   }),
 );
@@ -39,7 +39,7 @@ let redisClient = createClient({
   lazyConnect: true,
   showFriendlyErrorStack: true,
   legacyMode: true,
-	retry_strategy: (options) => {
+  retry_strategy: (options) => {
     const { error, total_retry_time, attempt } = options;
     if (error?.code === 'ECONNREFUSED' || error?.code === 'NR_CLOSED') {
       return 5000;
@@ -55,9 +55,9 @@ let redisClient = createClient({
 });
 
 if (!redisClient.isOpen) {
-			redisClient.connect().catch(console.error);
-			console.info('connected to redis at', process.env.REDIS_URL);
-		}
+  redisClient.connect().catch(console.error);
+  console.info('connected to redis at', process.env.REDIS_URL);
+}
 
 redisClient.on('error', (err) => {
   console.log('ⓘ on error:', err);
@@ -77,7 +77,7 @@ app.use(
     name: 'lostnfound',
     cookie: {
       secure: isProdEnv
-        }
+    }
   }),
 );
 
