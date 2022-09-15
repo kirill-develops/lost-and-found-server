@@ -79,7 +79,7 @@ app.use(
       sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax',
       secure: isProdEnv,
       httpOnly: isProdEnv,
-      domain: process.env.NODE_ENV === "production" && "lostnfound.netlify.app",
+      domain: "lostnfound.netlify.app",
     }
   }),
 );
