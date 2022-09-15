@@ -77,7 +77,9 @@ app.use(
     name: 'lostnfound',
     cookie: {
       sameSite: process.env.NODE_ENV === "production" ? 'none' : 'lax',
-      secure: isProdEnv
+      secure: isProdEnv,
+      httpOnly: isProdEnv,
+      domain: process.env.NODE_ENV === "production" && "lostnfound.netlify.app",
     }
   }),
 );
