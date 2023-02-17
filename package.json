@@ -22,7 +22,7 @@
     "express": "^4.17.3",
     "express-session": "^1.17.2",
     "helmet": "^5.0.2",
-    "knex": "^1.0.4",
+    "knex": "^2.4.0",
     "mysql": "^2.18.1",
     "passport": "^0.5.2",
     "passport-google-oauth20": "^2.0.0"
